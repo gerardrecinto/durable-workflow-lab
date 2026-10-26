@@ -1,0 +1,151 @@
+{
+ "name": "decline",
+ "title": "Declined card triggers compensation",
+ "blurb": "A decline is a non-retryable error. The saga releases the inventory reservation that was already made.",
+ "result": {
+  "Status": "compensated",
+  "Reason": "PaymentDeclined: card declined",
+  "ChargeID": "",
+  "Tracking": "",
+  "Compensated": [
+   "release"
+  ]
+ },
+ "sideEffects": [
+  "reserve",
+  "release"
+ ],
+ "calls": {
+  "charge": 1,
+  "refund": 0,
+  "release": 1,
+  "reserve": 1,
+  "ship": 0
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 4
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 6
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 6,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 6,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 7,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 7
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 8
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 10
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 10,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 10,
+   "detail": "Charge attempt 1"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskFailed",
+   "ms": 12,
+   "detail": "Charge: card declined"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 12
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 13
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 14
+  },
+  {
+   "id": 17,
+   "type": "ActivityTaskScheduled",
+   "ms": 14,
+   "detail": "Release"
+  },
+  {
+   "id": 18,
+   "type": "ActivityTaskStarted",
+   "ms": 14,
+   "detail": "Release attempt 1"
+  },
+  {
+   "id": 19,
+   "type": "ActivityTaskCompleted",
+   "ms": 15,
+   "detail": "Release"
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskScheduled",
+   "ms": 15
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskStarted",
+   "ms": 16
+  },
+  {
+   "id": 22,
+   "type": "WorkflowTaskCompleted",
+   "ms": 17
+  },
+  {
+   "id": 23,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 17
+  }
+ ]
+}

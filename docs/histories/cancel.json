@@ -1,0 +1,219 @@
+{
+ "name": "cancel",
+ "title": "Cancel signal during the window",
+ "blurb": "The customer cancels while the durable timer is running. The signal wins the race, the timer is cancelled and the charge is refunded.",
+ "result": {
+  "Status": "cancelled",
+  "Reason": "cancelled by customer",
+  "ChargeID": "ch-o-cancel:01a17750-f880-7c25-90b2-255ad6f75bc5",
+  "Tracking": "",
+  "Compensated": [
+   "refund",
+   "release"
+  ]
+ },
+ "sideEffects": [
+  "reserve",
+  "charge",
+  "refund",
+  "release"
+ ],
+ "calls": {
+  "charge": 1,
+  "refund": 1,
+  "release": 1,
+  "reserve": 1,
+  "ship": 0
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 4
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 6
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 6,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 6,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 8,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 8
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 16
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 19
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 19,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 19,
+   "detail": "Charge attempt 1"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskCompleted",
+   "ms": 20,
+   "detail": "Charge"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 20
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 21
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 22
+  },
+  {
+   "id": 17,
+   "type": "TimerStarted",
+   "ms": 22,
+   "detail": "5s"
+  },
+  {
+   "id": 18,
+   "type": "WorkflowExecutionSignaled",
+   "ms": 83,
+   "detail": "cancel"
+  },
+  {
+   "id": 19,
+   "type": "WorkflowTaskScheduled",
+   "ms": 83
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskStarted",
+   "ms": 84
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskCompleted",
+   "ms": 86
+  },
+  {
+   "id": 22,
+   "type": "TimerCanceled",
+   "ms": 86
+  },
+  {
+   "id": 23,
+   "type": "ActivityTaskScheduled",
+   "ms": 86,
+   "detail": "Refund"
+  },
+  {
+   "id": 24,
+   "type": "ActivityTaskStarted",
+   "ms": 86,
+   "detail": "Refund attempt 1"
+  },
+  {
+   "id": 25,
+   "type": "ActivityTaskCompleted",
+   "ms": 87,
+   "detail": "Refund"
+  },
+  {
+   "id": 26,
+   "type": "WorkflowTaskScheduled",
+   "ms": 87
+  },
+  {
+   "id": 27,
+   "type": "WorkflowTaskStarted",
+   "ms": 88
+  },
+  {
+   "id": 28,
+   "type": "WorkflowTaskCompleted",
+   "ms": 88
+  },
+  {
+   "id": 29,
+   "type": "ActivityTaskScheduled",
+   "ms": 88,
+   "detail": "Release"
+  },
+  {
+   "id": 30,
+   "type": "ActivityTaskStarted",
+   "ms": 88,
+   "detail": "Release attempt 1"
+  },
+  {
+   "id": 31,
+   "type": "ActivityTaskCompleted",
+   "ms": 90,
+   "detail": "Release"
+  },
+  {
+   "id": 32,
+   "type": "WorkflowTaskScheduled",
+   "ms": 90
+  },
+  {
+   "id": 33,
+   "type": "WorkflowTaskStarted",
+   "ms": 90
+  },
+  {
+   "id": 34,
+   "type": "WorkflowTaskCompleted",
+   "ms": 91
+  },
+  {
+   "id": 35,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 91
+  }
+ ]
+}

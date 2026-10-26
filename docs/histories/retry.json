@@ -1,0 +1,176 @@
+{
+ "name": "retry",
+ "title": "Transient failure is retried",
+ "blurb": "The payment provider fails twice. Temporal retries the activity with backoff; the workflow code contains no retry loop.",
+ "result": {
+  "Status": "completed",
+  "Reason": "",
+  "ChargeID": "ch-o-retry:01a17750-d8a7-735b-b973-d69ad376884a",
+  "Tracking": "trk-o-retry",
+  "Compensated": null
+ },
+ "sideEffects": [
+  "reserve",
+  "charge",
+  "ship"
+ ],
+ "calls": {
+  "charge": 3,
+  "refund": 0,
+  "release": 0,
+  "reserve": 1,
+  "ship": 1
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 3
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 5
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 5,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 5,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 6,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 6
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 9
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 10
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 10,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 2019,
+   "detail": "Charge attempt 3"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskCompleted",
+   "ms": 2023,
+   "detail": "Charge"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 2023
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 2026
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 2028
+  },
+  {
+   "id": 17,
+   "type": "TimerStarted",
+   "ms": 2028,
+   "detail": "300ms"
+  },
+  {
+   "id": 18,
+   "type": "TimerFired",
+   "ms": 3028
+  },
+  {
+   "id": 19,
+   "type": "WorkflowTaskScheduled",
+   "ms": 3028
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskStarted",
+   "ms": 3031
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskCompleted",
+   "ms": 3036
+  },
+  {
+   "id": 22,
+   "type": "ActivityTaskScheduled",
+   "ms": 3036,
+   "detail": "Ship"
+  },
+  {
+   "id": 23,
+   "type": "ActivityTaskStarted",
+   "ms": 3036,
+   "detail": "Ship attempt 1"
+  },
+  {
+   "id": 24,
+   "type": "ActivityTaskCompleted",
+   "ms": 3039,
+   "detail": "Ship"
+  },
+  {
+   "id": 25,
+   "type": "WorkflowTaskScheduled",
+   "ms": 3039
+  },
+  {
+   "id": 26,
+   "type": "WorkflowTaskStarted",
+   "ms": 3041
+  },
+  {
+   "id": 27,
+   "type": "WorkflowTaskCompleted",
+   "ms": 3043
+  },
+  {
+   "id": 28,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 3043
+  }
+ ]
+}

@@ -1,0 +1,246 @@
+{
+ "name": "ship-fails",
+ "title": "Late failure unwinds earlier steps",
+ "blurb": "Shipping keeps failing and exhausts its retries. Compensations run in reverse order: refund, then release.",
+ "result": {
+  "Status": "compensated",
+  "Reason": "ship failed: : ship: provider unavailable (injected)",
+  "ChargeID": "ch-o-ship-fails:01a17750-e4b0-7075-a23f-9bc386030de7",
+  "Tracking": "",
+  "Compensated": [
+   "refund",
+   "release"
+  ]
+ },
+ "sideEffects": [
+  "reserve",
+  "charge",
+  "refund",
+  "release"
+ ],
+ "calls": {
+  "charge": 1,
+  "refund": 1,
+  "release": 1,
+  "reserve": 1,
+  "ship": 5
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 4
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 11
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 11,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 11,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 12,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 12
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 13
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 14
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 14,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 14,
+   "detail": "Charge attempt 1"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskCompleted",
+   "ms": 15,
+   "detail": "Charge"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 15
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 15
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 16
+  },
+  {
+   "id": 17,
+   "type": "TimerStarted",
+   "ms": 16,
+   "detail": "300ms"
+  },
+  {
+   "id": 18,
+   "type": "TimerFired",
+   "ms": 1018
+  },
+  {
+   "id": 19,
+   "type": "WorkflowTaskScheduled",
+   "ms": 1018
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskStarted",
+   "ms": 1021
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskCompleted",
+   "ms": 1024
+  },
+  {
+   "id": 22,
+   "type": "ActivityTaskScheduled",
+   "ms": 1024,
+   "detail": "Ship"
+  },
+  {
+   "id": 23,
+   "type": "ActivityTaskStarted",
+   "ms": 5031,
+   "detail": "Ship attempt 5"
+  },
+  {
+   "id": 24,
+   "type": "ActivityTaskFailed",
+   "ms": 5035,
+   "detail": "Ship: ship: provider unavailable (injected)"
+  },
+  {
+   "id": 25,
+   "type": "WorkflowTaskScheduled",
+   "ms": 5035
+  },
+  {
+   "id": 26,
+   "type": "WorkflowTaskStarted",
+   "ms": 5040
+  },
+  {
+   "id": 27,
+   "type": "WorkflowTaskCompleted",
+   "ms": 5056
+  },
+  {
+   "id": 28,
+   "type": "ActivityTaskScheduled",
+   "ms": 5056,
+   "detail": "Refund"
+  },
+  {
+   "id": 29,
+   "type": "ActivityTaskStarted",
+   "ms": 5056,
+   "detail": "Refund attempt 1"
+  },
+  {
+   "id": 30,
+   "type": "ActivityTaskCompleted",
+   "ms": 5058,
+   "detail": "Refund"
+  },
+  {
+   "id": 31,
+   "type": "WorkflowTaskScheduled",
+   "ms": 5058
+  },
+  {
+   "id": 32,
+   "type": "WorkflowTaskStarted",
+   "ms": 5060
+  },
+  {
+   "id": 33,
+   "type": "WorkflowTaskCompleted",
+   "ms": 5061
+  },
+  {
+   "id": 34,
+   "type": "ActivityTaskScheduled",
+   "ms": 5061,
+   "detail": "Release"
+  },
+  {
+   "id": 35,
+   "type": "ActivityTaskStarted",
+   "ms": 5061,
+   "detail": "Release attempt 1"
+  },
+  {
+   "id": 36,
+   "type": "ActivityTaskCompleted",
+   "ms": 5062,
+   "detail": "Release"
+  },
+  {
+   "id": 37,
+   "type": "WorkflowTaskScheduled",
+   "ms": 5062
+  },
+  {
+   "id": 38,
+   "type": "WorkflowTaskStarted",
+   "ms": 5063
+  },
+  {
+   "id": 39,
+   "type": "WorkflowTaskCompleted",
+   "ms": 5065
+  },
+  {
+   "id": 40,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 5065
+  }
+ ]
+}

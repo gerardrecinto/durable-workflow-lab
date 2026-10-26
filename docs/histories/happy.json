@@ -1,0 +1,176 @@
+{
+ "name": "happy",
+ "title": "Happy path",
+ "blurb": "Reserve, charge, wait out the cancel window on a durable timer, ship.",
+ "result": {
+  "Status": "completed",
+  "Reason": "",
+  "ChargeID": "ch-o-happy:01a17750-d3db-73c0-828f-7ac71f5831fe",
+  "Tracking": "trk-o-happy",
+  "Compensated": null
+ },
+ "sideEffects": [
+  "reserve",
+  "charge",
+  "ship"
+ ],
+ "calls": {
+  "charge": 1,
+  "refund": 0,
+  "release": 0,
+  "reserve": 1,
+  "ship": 1
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 121
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 143
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 145,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 146,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 155,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 155
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 157
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 160
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 160,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 161,
+   "detail": "Charge attempt 1"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskCompleted",
+   "ms": 162,
+   "detail": "Charge"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 162
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 165
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 167
+  },
+  {
+   "id": 17,
+   "type": "TimerStarted",
+   "ms": 168,
+   "detail": "300ms"
+  },
+  {
+   "id": 18,
+   "type": "TimerFired",
+   "ms": 1169
+  },
+  {
+   "id": 19,
+   "type": "WorkflowTaskScheduled",
+   "ms": 1170
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskStarted",
+   "ms": 1178
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskCompleted",
+   "ms": 1184
+  },
+  {
+   "id": 22,
+   "type": "ActivityTaskScheduled",
+   "ms": 1184,
+   "detail": "Ship"
+  },
+  {
+   "id": 23,
+   "type": "ActivityTaskStarted",
+   "ms": 1184,
+   "detail": "Ship attempt 1"
+  },
+  {
+   "id": 24,
+   "type": "ActivityTaskCompleted",
+   "ms": 1186,
+   "detail": "Ship"
+  },
+  {
+   "id": 25,
+   "type": "WorkflowTaskScheduled",
+   "ms": 1186
+  },
+  {
+   "id": 26,
+   "type": "WorkflowTaskStarted",
+   "ms": 1187
+  },
+  {
+   "id": 27,
+   "type": "WorkflowTaskCompleted",
+   "ms": 1190
+  },
+  {
+   "id": 28,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 1190
+  }
+ ]
+}

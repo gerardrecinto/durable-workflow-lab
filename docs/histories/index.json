@@ -1,0 +1,1 @@
+[{"name":"happy","title":"Happy path"},{"name":"retry","title":"Transient failure is retried"},{"name":"decline","title":"Declined card triggers compensation"},{"name":"ship-fails","title":"Late failure unwinds earlier steps"},{"name":"cancel","title":"Cancel signal during the window"},{"name":"crash","title":"Worker dies mid-activity, another resumes"}]

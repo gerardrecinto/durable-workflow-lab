@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>durable-workflow-lab</title>
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#f7f7f5;--fg:#1c1c1a;--mut:#6b6b66;--card:#fff;--line:#dcdcd6;--wf:#6b6b66;--act:#3b6fd4;--tim:#b07a05;--sig:#7a4fc7;--ok:#1b7f4b;--bad:#c23b3b}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ecece8;--mut:#9a9a94;--card:#1d1d1b;--line:#333330;--wf:#8d8d88;--act:#6d9bf0;--tim:#e5a824;--sig:#a98af0;--ok:#3fb97a;--bad:#e06666}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:26px 0 8px}p{margin:6px 0}.mut{color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.tabs button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+.tabs button[aria-pressed=true]{border-color:var(--act);box-shadow:inset 0 0 0 1px var(--act)}
+.row{display:grid;grid-template-columns:44px 210px 1fr;gap:8px;align-items:center;font-size:13px;padding:2px 0;border-bottom:1px dashed var(--line)}
+.row .id{color:var(--mut)}.row .ty{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{position:relative;height:16px}.bar{position:absolute;top:3px;height:10px;min-width:6px;border-radius:3px}
+.det{font-size:12px;color:var(--mut);white-space:nowrap;position:absolute;top:0;padding-left:6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;font-size:14px}.kv b{font-weight:600}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;border:1px solid var(--line)}
+a{color:var(--act)}code{font:13px ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<main>
+<h1>durable-workflow-lab</h1>
+<p class="mut">An order saga on Temporal, run against a real Temporal dev server (Temporal CLI 1.9.1, server 1.32). Every timeline below is the actual event history that run produced, exported by <code>cmd/scenarios</code>. Personal learning project, not a production system.</p>
+<div class="tabs" id="tabs" role="group" aria-label="scenario"></div>
+<p id="blurb"></p>
+<div class="row" style="font-weight:600;border-bottom:1px solid var(--line)"><span>id</span><span>event</span><span>time from workflow start (ms)</span></div>
+<div class="card" id="tl" style="margin-top:6px;padding:8px 12px"></div>
+<h2>Outcome</h2>
+<div class="card"><div class="kv" id="kv"></div></div>
+<h2>What this shows</h2>
+<div class="card">
+<p><b>Durable execution:</b> the workflow function holds no state of its own. Its progress is the event history stored by the server, so a new worker rebuilds it by replaying that history and carries on. In the last scenario the first worker is stopped mid-charge; the second worker does not repeat the reservation and the card is charged once.</p>
+<p><b>Activities run at least once:</b> after a lost worker the charge is attempted again. The idempotency key is what keeps that from double charging, so side effects must be idempotent.</p>
+<p><b>Determinism and versioning:</b> the test suite replays every recorded history against the current code (passes), against a version that adds a step behind <code>workflow.GetVersion</code> (passes) and against one that adds the same step with no version marker (rejected with Temporal's non-determinism error, code TMPRL1100).</p>
+<p><b>Not covered:</b> multi-cluster namespaces, child workflows and continue-as-new at scale, Temporal Cloud, and any load testing. I have not run Temporal in production. Cadence and Windmill are compared in the README from their documentation only.</p>
+</div>
+<h2>References</h2>
+<div class="card"><ul>
+<li><a href="https://docs.temporal.io/workflows">Temporal: Workflows</a> and <a href="https://docs.temporal.io/workflow-definition">Workflow definition and determinism</a></li>
+<li><a href="https://docs.temporal.io/activities">Temporal: Activities</a> and <a href="https://docs.temporal.io/encyclopedia/retry-policies">Retry policies</a></li>
+<li><a href="https://docs.temporal.io/encyclopedia/event-history">Temporal: Event history</a></li>
+<li><a href="https://docs.temporal.io/develop/go/versioning">Temporal Go SDK: Versioning</a> and <a href="https://docs.temporal.io/develop/go/testing-suite">Testing suite</a></li>
+<li><a href="https://pkg.go.dev/go.temporal.io/sdk">go.temporal.io/sdk package documentation</a></li>
+<li>Garcia-Molina and Salem, <a href="https://www.cs.cornell.edu/andru/cs711/2002fa/reading/sagas.pdf">Sagas</a> (SIGMOD 1987), and <a href="https://microservices.io/patterns/data/saga.html">the Saga pattern</a></li>
+<li><a href="https://cadenceworkflow.io/">Cadence</a> and <a href="https://www.windmill.dev/docs/intro">Windmill</a> documentation, for comparison</li>
+</ul></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const norm=t=>t.replace(/([a-z])([A-Z])/g,'$1_$2').toUpperCase();
+const cat=t=>t.startsWith('ACTIVITY')?'--act':t.startsWith('TIMER')?'--tim':t.includes('SIGNAL')?'--sig':/FAILED|TIMED_OUT/.test(t)?'--bad':'--wf';
+const keep=t=>!/WORKFLOW_TASK_(SCHEDULED|STARTED)/.test(t);
+async function show(name){
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.n===name));
+  const d=await (await fetch('histories/'+name+'.json')).json();
+  $('blurb').textContent=d.blurb;
+  d.timeline.forEach(e=>e.type=norm(e.type));
+  const ev=d.timeline.filter(e=>keep(e.type)), max=Math.max(...d.timeline.map(e=>e.ms),1);
+  $('tl').innerHTML=ev.map(e=>{
+    const left=(e.ms/max*70).toFixed(1);
+    return '<div class="row"><span class="id">'+e.id+'</span><span class="ty" title="'+e.type+'">'+e.type.toLowerCase().replace(/_/g,' ')+'</span><span class="track"><span class="bar" style="left:'+left+'%;background:var('+cat(e.type)+')"></span><span class="det" style="left:'+(+left+1.5)+'%">'+(e.detail||'')+' <span class="mut">'+e.ms+'ms</span></span></span></div>'
+  }).join('');
+  const r=d.result;
+  $('kv').innerHTML=[['Final status','<span class="pill">'+r.Status+'</span>'],['Reason',r.Reason||'none'],['Compensations run',(r.Compensated||[]).join(' then ')||'none'],['Side effects in order',(d.sideEffects||[]).join(', ')||'none'],['Activity calls',Object.entries(d.calls).map(e=>e[0]+' x'+e[1]).join(', ')],['History events',d.timeline.length]].map(x=>'<b>'+x[0]+'</b><span>'+x[1]+'</span>').join('');
+}
+fetch('histories/index.json').then(r=>r.json()).then(ix=>{
+  $('tabs').innerHTML=ix.map(x=>'<button data-n="'+x.name+'" aria-pressed="false">'+x.title+'</button>').join('');
+  document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.n));
+  show(ix[0].name);
+}).catch(()=>{$('blurb').textContent='Could not load histories. Serve this folder over HTTP: python3 -m http.server -d docs'});
+</script>
+</body>
+</html>

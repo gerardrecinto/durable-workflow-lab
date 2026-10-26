@@ -1,0 +1,176 @@
+{
+ "name": "crash",
+ "title": "Worker dies mid-activity, another resumes",
+ "blurb": "The first worker is stopped while a charge call is in flight. A second worker picks the workflow up from its history: Reserve is not repeated, the charge is retried and the idempotency key keeps it to one charge.",
+ "result": {
+  "Status": "completed",
+  "Reason": "",
+  "ChargeID": "ch-o-crash:01a17750-f8e3-704e-b4d1-3afc7c7a7d6a",
+  "Tracking": "trk-o-crash",
+  "Compensated": null
+ },
+ "sideEffects": [
+  "reserve",
+  "charge",
+  "ship"
+ ],
+ "calls": {
+  "charge": 2,
+  "refund": 0,
+  "release": 0,
+  "reserve": 1,
+  "ship": 1
+ },
+ "timeline": [
+  {
+   "id": 1,
+   "type": "WorkflowExecutionStarted",
+   "ms": 0
+  },
+  {
+   "id": 2,
+   "type": "WorkflowTaskScheduled",
+   "ms": 0
+  },
+  {
+   "id": 3,
+   "type": "WorkflowTaskStarted",
+   "ms": 2
+  },
+  {
+   "id": 4,
+   "type": "WorkflowTaskCompleted",
+   "ms": 3
+  },
+  {
+   "id": 5,
+   "type": "ActivityTaskScheduled",
+   "ms": 3,
+   "detail": "Reserve"
+  },
+  {
+   "id": 6,
+   "type": "ActivityTaskStarted",
+   "ms": 3,
+   "detail": "Reserve attempt 1"
+  },
+  {
+   "id": 7,
+   "type": "ActivityTaskCompleted",
+   "ms": 4,
+   "detail": "Reserve"
+  },
+  {
+   "id": 8,
+   "type": "WorkflowTaskScheduled",
+   "ms": 4
+  },
+  {
+   "id": 9,
+   "type": "WorkflowTaskStarted",
+   "ms": 5
+  },
+  {
+   "id": 10,
+   "type": "WorkflowTaskCompleted",
+   "ms": 6
+  },
+  {
+   "id": 11,
+   "type": "ActivityTaskScheduled",
+   "ms": 6,
+   "detail": "Charge"
+  },
+  {
+   "id": 12,
+   "type": "ActivityTaskStarted",
+   "ms": 2009,
+   "detail": "Charge attempt 2"
+  },
+  {
+   "id": 13,
+   "type": "ActivityTaskCompleted",
+   "ms": 2014,
+   "detail": "Charge"
+  },
+  {
+   "id": 14,
+   "type": "WorkflowTaskScheduled",
+   "ms": 2014
+  },
+  {
+   "id": 15,
+   "type": "WorkflowTaskStarted",
+   "ms": 2024
+  },
+  {
+   "id": 16,
+   "type": "WorkflowTaskCompleted",
+   "ms": 2029
+  },
+  {
+   "id": 17,
+   "type": "TimerStarted",
+   "ms": 2029,
+   "detail": "300ms"
+  },
+  {
+   "id": 18,
+   "type": "TimerFired",
+   "ms": 3020
+  },
+  {
+   "id": 19,
+   "type": "WorkflowTaskScheduled",
+   "ms": 3020
+  },
+  {
+   "id": 20,
+   "type": "WorkflowTaskStarted",
+   "ms": 3021
+  },
+  {
+   "id": 21,
+   "type": "WorkflowTaskCompleted",
+   "ms": 3023
+  },
+  {
+   "id": 22,
+   "type": "ActivityTaskScheduled",
+   "ms": 3023,
+   "detail": "Ship"
+  },
+  {
+   "id": 23,
+   "type": "ActivityTaskStarted",
+   "ms": 3023,
+   "detail": "Ship attempt 1"
+  },
+  {
+   "id": 24,
+   "type": "ActivityTaskCompleted",
+   "ms": 3024,
+   "detail": "Ship"
+  },
+  {
+   "id": 25,
+   "type": "WorkflowTaskScheduled",
+   "ms": 3024
+  },
+  {
+   "id": 26,
+   "type": "WorkflowTaskStarted",
+   "ms": 3026
+  },
+  {
+   "id": 27,
+   "type": "WorkflowTaskCompleted",
+   "ms": 3028
+  },
+  {
+   "id": 28,
+   "type": "WorkflowExecutionCompleted",
+   "ms": 3028
+  }
+ ]
+}
